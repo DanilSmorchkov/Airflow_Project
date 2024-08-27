@@ -13,4 +13,26 @@ This model can classify text into various categories without prior training on s
 
 3. Result Aggregation: This task focuses on aggregating the classified data.
 
-
+## Usage:
+To use this pipeline for local development, follow the steps below:
+1. Check that Docker Engine has sufficient memory allocated.
+2. Before the first Airflow run, prepare your environment:
+- if you are working on Linux, specify the AIRFLOW_UID by running the command:
+```zsh
+echo -e "AIRFLOW_UID=$(id -u)" > .env
+```
+- Perform the database migration and create the initial user account:
+```zsh
+ docker compose up airflow-init
+```
+The created user account will have the login airflow and the password `airflow`.
+3. Start Airflow and build custom images to run tasks in Docker-containers:
+```zsh
+docker compose up --build
+```
+4. Access the Airflow web interface in your browser at http://localhost:8080.
+5. Trigger the DAG financial_news to initiate the pipeline execution.
+6. When you are finished working and want to clean up your environment, run:
+```zsh
+docker compose down --volume --rmi all
+```
